@@ -12,11 +12,11 @@ public class MainWindowController {
     @FXML private ImageView btnMinimize, btnClose;
     @FXML private Label lblResult;
 
-    private double x, y;
-    private double num1 = 0;
-    private String operator = "+";
+    private double x, y;// Przechowuje współrzędne X i Y podczas przesuwania okna
+    private double num1 = 0; // Pierwsza liczba w operacji
+    private String operator = "+";// Przechowuje operator matematyczny 
 
-    public void init(Stage stage) {
+    public void init(Stage stage) { // Metoda inicjalizacyjna, ustawia zdarzenia dla przycisków minimalizacji, zamknięcia i przeciągania okna
         titlePane.setOnMousePressed(mouseEvent -> {
             x = mouseEvent.getSceneX();
             y = mouseEvent.getSceneY();
@@ -31,13 +31,20 @@ public class MainWindowController {
     }
 
     @FXML
-    void onNumberClicked(MouseEvent event) {
+    void onNumberClicked(MouseEvent event) { 
+        //Obsługuje zdarzenia kliknięcia liczb w kalkulatorze 
+        //Pobiera wartość liczbową z identyfikatora klikniętego przycisku i aktualizuje wyświetlacz wyniku
+
         int value = Integer.parseInt(((Pane)event.getSource()).getId().replace("btn",""));
         lblResult.setText(Double.parseDouble(lblResult.getText())==0?String.valueOf((double)value):String.valueOf(Double.parseDouble(lblResult.getText())*10+value));
     }
 
     @FXML
     void onSymbolClicked(MouseEvent event) {
+        /*Obsługuje zdarzenia kliknięcia operatorów matematycznych lub przycisków równości i czyszczenia
+            Po kliknięciu operatora: Zapisuje aktualny wynik jako num1 i przygotowuje się na kolejną liczbę
+            Po kliknięciu "Equals": Wykonuje obliczenia na num1 i bieżącej liczbie, używając wcześniej zapisanego operatora
+        */
         String symbol = ((Pane)event.getSource()).getId().replace("btn","");
         if(symbol.equals("Equals")) {
             double num2 = Double.parseDouble(lblResult.getText());
